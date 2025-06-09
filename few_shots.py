@@ -12,18 +12,18 @@ class FewshotPosts:
             raw_data = json.load(raw_file)
             self.df = pd.json_normalize(raw_data)
             self.df['length'] = self.df['line_count'].apply(self.categorize_length)
-
             all_tags = self.df['tags'].apply(lambda x: x).sum()
             self.unique_tags = list(set(all_tags))
 
-    def get_filtered_posts(self, length='short', language='english', tag='jobseekers'):
+    def get_filtered_posts(self, length='short', language='english', tag='jobseekers', creator=None):
         if self.df is None:
             raise ValueError("Posts data not loaded. Please check the file path.")
-        
+        print(f"Filtering posts with length: {length}, language: {language}, tag: {tag}, creator: {creator}")
         filtered_df = self.df[
             (self.df['length'] == length) &
             (self.df['language'] == language) &
-            (self.df['tags'].apply(lambda x: tag in x))
+            (self.df['tags'].apply(lambda x: any(tag.lower() == t.lower() for t in x))) &
+            (self.df['creator'] == creator if creator else True) 
         ]
         
         return filtered_df.to_dict(orient='records')
@@ -39,6 +39,9 @@ class FewshotPosts:
     def get_tags(self):
         return self.unique_tags
 
+    def get_creator(self):
+        return self.df['creator'].unique().tolist() if 'creator' in self.df.columns else []
+    
 if __name__ == "__main__":
     fs = FewshotPosts()
     # posts = fs.get_filtered_posts('Short','Hinglish','Scams')

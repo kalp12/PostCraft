@@ -15,10 +15,12 @@ def process_posts(raw_file_path,processed_file_path = 'data/processed_posts.json
             enriched_posts.append(post_with_metadata)
     
     unified_tags = get_unified_tags(enriched_posts)
+    print("Unified Tags:", unified_tags)
     
     for epost in enriched_posts:
         current_tags = epost['tags']
-        new_tags = {unified_tags[tag] for tag in current_tags}
+        # new_tags = {unified_tags[tag] for tag in current_tags}
+        new_tags = {unified_tags.get(tag, tag) for tag in current_tags}
         epost['tags'] = list(new_tags)
         # print(epost)
     with open(processed_file_path, 'w', encoding='utf-8') as processed_file:
