@@ -4,7 +4,7 @@ from langchain_core.output_parsers import JsonOutputParser
 from langchain_core.exceptions import OutputParserException
 from llm_helper import llm
 
-def process_posts(raw_file_path,processed_file_path = 'data/processed_posts.json'):
+def process_posts(raw_file_path,processed_file_path = 'data/processed_posts.json',db = True):
     enriched_posts = []
     with open(raw_file_path, 'r', encoding='utf-8') as raw_file:
         raw_data = json.load(raw_file)
@@ -23,8 +23,15 @@ def process_posts(raw_file_path,processed_file_path = 'data/processed_posts.json
         new_tags = {unified_tags.get(tag, tag) for tag in current_tags}
         epost['tags'] = list(new_tags)
         # print(epost)
-    with open(processed_file_path, 'w', encoding='utf-8') as processed_file:
-        json.dump(enriched_posts, processed_file, indent=4)
+    if not db:
+        with open(processed_file_path, 'w', encoding='utf-8') as processed_file:
+            json.dump(enriched_posts, processed_file, indent=4)
+    else:
+        from db import get_db
+        db = get_db()
+        collection = db['posts']
+        collection.insert_many(enriched_posts)
+        print(f"Inserted {len(enriched_posts)} posts into the database.")   
                  
 def extract_metadata(post):
     template = '''
