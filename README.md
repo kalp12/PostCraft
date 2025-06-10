@@ -25,7 +25,8 @@ Generate engaging LinkedIn posts based on user inputs like topic, length, langua
 ### Prerequisites
 
 - Python 3.8+
-- Access to an LLM backend (e.g., OpenAI GPT or similar) — ensure API keys/config are set
+- Access to an LLM backend (e.g., Llama) — ensure API keys/config are set
+- MongoDB
 - Recommended to create a virtual environment
 
 ### Installation
@@ -39,7 +40,12 @@ Generate engaging LinkedIn posts based on user inputs like topic, length, langua
 ```bash
 pip install -r requirements.txt
 ```
-3. Prepare your data:
+3. Preprocess your data:
+```bash
+
+python preprocess.py
+```
+4. Prepare your data:
 
 Ensure you have data/processed_posts.json with your post dataset
 
