@@ -1,6 +1,6 @@
 import pandas as pd
 import json
-from db import get_db
+# from db import get_db
 
 class FewshotPosts:
     def __init__(self, file_path = "data/processed_posts.json"):
