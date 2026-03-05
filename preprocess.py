@@ -23,15 +23,15 @@ def process_posts(raw_file_path,processed_file_path = 'data/processed_posts.json
         new_tags = {unified_tags.get(tag, tag) for tag in current_tags}
         epost['tags'] = list(new_tags)
         # print(epost)
-    if not db:
-        with open(processed_file_path, 'w', encoding='utf-8') as processed_file:
-            json.dump(enriched_posts, processed_file, indent=4)
-    else:
-        from db import get_db
-        db = get_db()
-        collection = db['posts']
-        collection.insert_many(enriched_posts)
-        print(f"Inserted {len(enriched_posts)} posts into the database.")   
+    # if not db:
+    with open(processed_file_path, 'w', encoding='utf-8') as processed_file:
+        json.dump(enriched_posts, processed_file, indent=4)
+    # else:
+    #     from db import get_db
+    #     db = get_db()
+    #     collection = db['posts']
+    #     collection.insert_many(enriched_posts)
+    #     print(f"Inserted {len(enriched_posts)} posts into the database.")   
                  
 def extract_metadata(post):
     template = '''
