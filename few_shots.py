@@ -10,21 +10,21 @@ class FewshotPosts:
         self.load_posts(file_path)
         
     def load_posts(self, file_path, db=True):  
-        db = False
-        if not db:
-            with open(file_path, 'r', encoding='utf-8') as raw_file:
-                raw_data = json.load(raw_file)
-                self.df = pd.json_normalize(raw_data)
-                self.df['length'] = self.df['line_count'].apply(self.categorize_length)
-                all_tags = self.df['tags'].apply(lambda x: x).sum()
-                self.unique_tags = list(set(all_tags))
-        else:
-            print("Loading posts from MongoDB...")
-            collection = self.db['posts']
-            self.df = pd.DataFrame(list(collection.find()))
+        # db = False
+        # if not db:
+        with open(file_path, 'r', encoding='utf-8') as raw_file:
+            raw_data = json.load(raw_file)
+            self.df = pd.json_normalize(raw_data)
             self.df['length'] = self.df['line_count'].apply(self.categorize_length)
             all_tags = self.df['tags'].apply(lambda x: x).sum()
             self.unique_tags = list(set(all_tags))
+        # else:
+        #     print("Loading posts from MongoDB...")
+        #     collection = self.db['posts']
+        #     self.df = pd.DataFrame(list(collection.find()))
+        #     self.df['length'] = self.df['line_count'].apply(self.categorize_length)
+        #     all_tags = self.df['tags'].apply(lambda x: x).sum()
+        #     self.unique_tags = list(set(all_tags))
 
     def get_filtered_posts(self, length='short', language='english', tag='jobseekers', creator=None):
         if self.df is None:
