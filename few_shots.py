@@ -4,12 +4,13 @@ from db import get_db
 
 class FewshotPosts:
     def __init__(self, file_path = "data/processed_posts.json"):
-        self.db = get_db()
+        # self.db = get_db()
         self.df = None
         self.unique_tags = None
         self.load_posts(file_path)
         
     def load_posts(self, file_path, db=True):  
+        db = False
         if not db:
             with open(file_path, 'r', encoding='utf-8') as raw_file:
                 raw_data = json.load(raw_file)
