@@ -53,7 +53,7 @@ This file should contain posts with keys: text, engagement, creator, tags, line_
 
 ```bash
 
-streamlit run app.py
+streamlit run main.py
 ```
 This launches the web app on your local machine where you can select parameters and generate posts interactively.
 
